@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe Page - Fullscreen Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            transition: background-color 0.3s ease;
+        }
+        
+        body.fullscreen {
+            background-color: #ff0000;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .info {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .explanation {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            max-width: 600px;
+        }
+        
+        .explanation h3 {
+            margin-top: 0;
+            color: #0c5460;
+        }
+        
+        .fullscreen-content {
+            display: none;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        
+        body.fullscreen .fullscreen-content {
+            display: block;
+        }
+        
+        body.fullscreen .info {
+            display: none;
+        }
+        
+        body.fullscreen h1 {
+            color: white;
+        }
+        
+        body.fullscreen #fullscreenBtn {
+            display: none;
+        }
+        
+        .exit-button {
+            margin-top: 20px;
+            background-color: #dc3545;
+        }
+        
+        .exit-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Standard Fullscreen API</h1>
+    
+    <div class="explanation">
+        <h3>How This Works:</h3>
+        <p>This iframe uses the standard HTML5 Fullscreen API with <code>requestFullscreen()</code> to hide all browser UI and provide a true fullscreen experience.</p>
+    </div>
+    
+    <button id="fullscreenBtn">Go Fullscreen</button>
+    
+    <div class="fullscreen-content">
+        <h2>Fullscreen Mode Active!</h2>
+        <p>Browser UI is now hidden. Press Escape to exit.</p>
+        <button id="exitBtn" class="exit-button">Exit Fullscreen</button>
+    </div>
+
+    <script>
+        const body = document.body;
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const exitBtn = document.getElementById('exitBtn');
+        
+        // Function to enter fullscreen
+        function enterFullscreen() {
+            const element = document.documentElement;
+            
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            }
+        }
+        
+        // Function to exit fullscreen
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            }
+        }
+        
+        // Event listener for fullscreen button
+        fullscreenBtn.addEventListener('click', function() {
+            enterFullscreen();
+        });
+        
+        // Event listener for exit button
+        exitBtn.addEventListener('click', function() {
+            exitFullscreen();
+        });
+        
+        // Listen for fullscreen changes
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('msfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        
+        function handleFullscreenChange() {
+            if (document.fullscreenElement || 
+                document.webkitFullscreenElement || 
+                document.msFullscreenElement ||
+                document.mozFullScreenElement) {
+                // Entered fullscreen
+                body.classList.add('fullscreen');
+            } else {
+                // Exited fullscreen
+                body.classList.remove('fullscreen');
+            }
+        }
+        
+        // Handle escape key to exit fullscreen
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && body.classList.contains('fullscreen')) {
+                exitFullscreen();
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe - Parent Communication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 10px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .explanation {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            max-width: 600px;
+        }
+        
+        .explanation h3 {
+            margin-top: 0;
+            color: #0c5460;
+        }
+        
+        .exit-button {
+            background-color: #dc3545;
+        }
+        
+        .exit-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Parent Communication</h1>
+    
+    <div class="explanation">
+        <h3>How This Works:</h3>
+        <p>This iframe sends messages to the parent page to create a fullscreen overlay that covers the entire browser window while keeping the browser UI visible.</p>
+    </div>
+    
+    <div class="button-group">
+        <button id="parentFullscreenBtn">Go Fullscreen</button>
+    </div>
+
+    <script>
+        const parentFullscreenBtn = document.getElementById('parentFullscreenBtn');
+        
+        // Parent communication functions
+        function enterParentFullscreen() {
+            window.parent.postMessage({
+                type: 'ENTER_PARENT_FULLSCREEN',
+                iframeContent: {
+                    title: 'Fullscreen from Iframe!',
+                    message: 'This fullscreen overlay covers the entire browser window while keeping the browser UI visible.',
+                    backgroundColor: '#ff0000'
+                }
+            }, '*');
+        }
+        
+        // Event listeners
+        parentFullscreenBtn.addEventListener('click', enterParentFullscreen);
+    </script>
+</body>
+</html> 
